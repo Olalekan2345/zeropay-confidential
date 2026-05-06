@@ -61,6 +61,20 @@ export async function POST(req: NextRequest) {
 
     if (error) return NextResponse.json({ error: error.message }, { status: 500 });
 
+    // If employee was paid, reset to pending so new hours can be computed and paid again
+    await db
+      .from('employees')
+      .update({
+        payroll_status: 'pending',
+        weekly_hours: 0,
+        encrypted_salary: null,
+        salary_iv: null,
+        compute_hash: null,
+        updated_at: now,
+      })
+      .eq('id', employee_id)
+      .eq('payroll_status', 'paid');
+
     // Log
     const storage = await uploadToStorage({ attendance: data }, 'clock-in');
     await db.from('storage_receipts').insert({

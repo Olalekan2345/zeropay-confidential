@@ -38,18 +38,11 @@ export async function POST(req: NextRequest) {
 
     if (receipt) results.push(receipt);
 
-    // Record payment then reset employee for next cycle
+    // Mark as paid — will reset to pending automatically when new hours are clocked in
     if (tx_hash) {
       await db
         .from('employees')
-        .update({
-          payroll_status: 'pending',
-          weekly_hours: 0,
-          encrypted_salary: null,
-          salary_iv: null,
-          compute_hash: null,
-          updated_at: new Date().toISOString(),
-        })
+        .update({ payroll_status: 'paid', updated_at: new Date().toISOString() })
         .eq('id', employee_id);
     }
 
