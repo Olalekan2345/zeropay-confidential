@@ -187,6 +187,7 @@ export function EmployerDashboardContent({ company, walletAddress, onToggleAutoP
                   onResendInvite={(emp) => resendInvite(emp, company.name)}
                   onUpdateEmployee={updateEmployee}
                   onDeleteEmployee={deleteEmployee}
+                  onPayrollComplete={refetchPayroll}
                 />
               </div>
             </div>
@@ -214,6 +215,7 @@ export function EmployerDashboardContent({ company, walletAddress, onToggleAutoP
                   onResendInvite={(emp) => resendInvite(emp, company.name)}
                   onUpdateEmployee={updateEmployee}
                   onDeleteEmployee={deleteEmployee}
+                  onPayrollComplete={refetchPayroll}
                 />
               </div>
             </div>
@@ -251,6 +253,7 @@ export function EmployerDashboardContent({ company, walletAddress, onToggleAutoP
                   onResendInvite={(emp) => resendInvite(emp, company.name)}
                   onUpdateEmployee={updateEmployee}
                   onDeleteEmployee={deleteEmployee}
+                  onPayrollComplete={refetchPayroll}
                 />
               </div>
             </div>

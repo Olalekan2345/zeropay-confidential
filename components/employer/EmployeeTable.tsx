@@ -39,11 +39,12 @@ interface Props {
   onResendInvite: (emp: Employee) => Promise<any>;
   onUpdateEmployee: (id: string, updates: Partial<Employee>) => Promise<any>;
   onDeleteEmployee: (id: string) => Promise<any>;
+  onPayrollComplete?: () => void;
 }
 
 export function EmployeeTable({
   employees, attendance, onClockIn, onClockOut, getTodayRecord,
-  payrollActions, companyName, onResendInvite, onUpdateEmployee, onDeleteEmployee,
+  payrollActions, companyName, onResendInvite, onUpdateEmployee, onDeleteEmployee, onPayrollComplete,
 }: Props) {
   const [actionLoading, setActionLoading] = useState<Record<string, string>>({});
   const [decryptedSalaries, setDecryptedSalaries] = useState<Record<string, number>>({});
@@ -153,6 +154,7 @@ export function EmployeeTable({
     try {
       await payrollActions.executePayroll([emp], decryptedSalaries);
       showToast(`Paid ${emp.name} — ${decryptedSalaries[emp.id].toFixed(4)} 0G`, 'success');
+      onPayrollComplete?.();
     } catch (e: any) {
       showToast(e.message, 'error');
     } finally {
