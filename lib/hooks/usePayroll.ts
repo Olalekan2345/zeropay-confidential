@@ -22,7 +22,12 @@ export function usePayrollReceipts(companyId: string | null) {
     if (!companyId) return;
     const res = await window.fetch(`/api/payroll/receipts?company_id=${companyId}`);
     const json = await res.json();
-    setReceipts(json.receipts || []);
+    // Only update if we got real data — never wipe existing receipts with empty
+    if (json.receipts?.length > 0) {
+      setReceipts(json.receipts);
+    } else if (json.receipts !== undefined) {
+      setReceipts(prev => prev.length === 0 ? [] : prev);
+    }
   }, [companyId]);
 
   useEffect(() => { fetch(); }, [fetch]);

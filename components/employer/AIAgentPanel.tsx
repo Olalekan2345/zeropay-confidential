@@ -61,7 +61,7 @@ export function AIAgentPanel({ agentLogs, employees, autoPayEnabled, onToggleAut
       }
       await payrollActions.executePayroll(eligibleForPay, decryptedAmounts);
       setStatus('done');
-      onPayrollComplete?.();
+      setTimeout(() => onPayrollComplete?.(), 1500);
     } catch (e: any) {
       setError(e.message);
       setStatus('idle');

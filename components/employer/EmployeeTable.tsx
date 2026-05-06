@@ -154,7 +154,7 @@ export function EmployeeTable({
     try {
       await payrollActions.executePayroll([emp], decryptedSalaries);
       showToast(`Paid ${emp.name} — ${decryptedSalaries[emp.id].toFixed(4)} 0G`, 'success');
-      onPayrollComplete?.();
+      setTimeout(() => onPayrollComplete?.(), 1500);
     } catch (e: any) {
       showToast(e.message, 'error');
     } finally {
