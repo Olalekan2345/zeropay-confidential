@@ -12,7 +12,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from '
 import { EXPLORER_URL } from '@/lib/wagmi';
 import {
   LogIn, LogOut, Zap, Lock, CheckCircle, Clock, Shield,
-  User, Mail, ExternalLink, Loader2, Pencil, Trash2, AlertTriangle,
+  User, Mail, ExternalLink, Loader2, Pencil, Trash2, AlertTriangle, Eye,
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
@@ -128,11 +128,17 @@ export function EmployeeTable({
   const handleRevealSalary = async (emp: Employee) => {
     if (!emp.encrypted_salary || !emp.salary_iv) return;
     setRevealLoading(emp.id);
+    showToast('MetaMask will ask you to sign to verify identity...', 'success');
     try {
-      const amount = await payrollActions.decryptEmployeeSalary(emp.encrypted_salary, emp.salary_iv);
+      const amount = await payrollActions.decryptEmployeeSalary(
+        emp.encrypted_salary,
+        emp.salary_iv,
+        emp.compute_hash
+      );
       setDecryptedSalaries(p => ({ ...p, [emp.id]: amount }));
+      showToast('Salary revealed — signature verified', 'success');
     } catch (e: any) {
-      showToast(`Cannot decrypt: ${e.message}`, 'error');
+      showToast(`Cannot reveal: ${e.message}`, 'error');
     } finally {
       setRevealLoading(null);
     }
@@ -325,8 +331,10 @@ export function EmployeeTable({
                         )}
                         {decrypted === undefined && (
                           <button onClick={() => handleRevealSalary(emp)} disabled={revealLoading === emp.id}
-                            className="text-xs text-brand-600 hover:underline">
-                            {revealLoading === emp.id ? '...' : 'reveal'}
+                            className="flex items-center gap-1 text-xs text-brand-600 hover:text-brand-800 font-medium px-2 py-0.5 rounded-md bg-brand-50 hover:bg-brand-100 transition-colors">
+                            {revealLoading === emp.id
+                              ? <><Loader2 className="w-3 h-3 animate-spin" />Signing...</>
+                              : <><Shield className="w-3 h-3" />Sign to Reveal</>}
                           </button>
                         )}
                       </div>

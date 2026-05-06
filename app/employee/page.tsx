@@ -14,7 +14,7 @@ import { cn, truncateHash } from '@/lib/utils';
 import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, CartesianGrid } from 'recharts';
 import { getWeekDates } from '@/lib/payroll';
 import { EXPLORER_URL } from '@/lib/wagmi';
-import { useAccount, useBalance, usePublicClient } from 'wagmi';
+import { useAccount, useBalance, usePublicClient, useWalletClient } from 'wagmi';
 import { formatEther } from 'viem';
 import { galileoTestnet } from '@/lib/wagmi';
 import { WalletConnect } from '@/components/employer/WalletConnect';
@@ -25,9 +25,13 @@ const DAYS = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri'];
 
 function EmployeePortalView({ employee, attendance, payrollReceipts, companyName }: any) {
   const [showSalary, setShowSalary] = useState(false);
+  const [salaryUnlocked, setSalaryUnlocked] = useState(false);
+  const [signing, setSigning] = useState(false);
+  const [signError, setSignError] = useState<string | null>(null);
   const [attestation, setAttestation] = useState<{ attested: boolean; employer?: string; timestamp?: number } | null>(null);
   const [checkingAttestation, setCheckingAttestation] = useState(false);
   const { address } = useAccount();
+  const { data: walletClient } = useWalletClient({ chainId: galileoTestnet.id });
   const publicClient = usePublicClient({ chainId: galileoTestnet.id });
   const { data: balanceData } = useBalance({
     address: (employee.wallet_address || address) as `0x${string}`,
@@ -69,6 +73,30 @@ function EmployeePortalView({ employee, attendance, payrollReceipts, companyName
       verifyAttestation();
     }
   }, [employee.payroll_status, verifyAttestation]);
+
+  const handleReveal = useCallback(async () => {
+    if (salaryUnlocked) {
+      setShowSalary(v => !v);
+      return;
+    }
+    if (!address) {
+      setSignError('Connect your wallet first to verify identity.');
+      return;
+    }
+    if (!walletClient) return;
+    setSigning(true);
+    setSignError(null);
+    try {
+      const message = `ZeroPay: I authorize salary reveal for ${address} at ${new Date().toISOString().split('T')[0]}`;
+      await walletClient.signMessage({ message });
+      setSalaryUnlocked(true);
+      setShowSalary(true);
+    } catch (e: any) {
+      setSignError(e.code === 4001 ? 'Signature rejected.' : 'Signing failed. Try again.');
+    } finally {
+      setSigning(false);
+    }
+  }, [salaryUnlocked, address, walletClient]);
 
   const weekDates = getWeekDates();
   const chartData = weekDates.map((date, i) => {
@@ -180,22 +208,27 @@ function EmployeePortalView({ employee, attendance, payrollReceipts, companyName
             {employee.payroll_status === 'computed' || employee.payroll_status === 'paid' ? (
               <div>
                 <div className="flex items-center gap-2">
-                  {showSalary ? (
+                  {showSalary && salaryUnlocked ? (
                     <span className="text-xl font-bold text-slate-900 font-mono">{estimatedSalary.toFixed(4)}</span>
                   ) : (
                     <span className="text-xl font-bold text-slate-300">••••</span>
                   )}
-                  <button onClick={() => setShowSalary(!showSalary)} className="text-slate-400 hover:text-slate-600">
-                    {showSalary ? <EyeOff className="w-3.5 h-3.5" /> : <Eye className="w-3.5 h-3.5" />}
+                  <button onClick={handleReveal} disabled={signing} className="text-slate-400 hover:text-slate-600">
+                    {signing
+                      ? <Loader2 className="w-3.5 h-3.5 animate-spin" />
+                      : showSalary && salaryUnlocked
+                      ? <EyeOff className="w-3.5 h-3.5" />
+                      : <Shield className="w-3.5 h-3.5 text-violet-500" />}
                   </button>
                 </div>
+                {signError && <div className="text-xs text-red-500 mt-0.5">{signError}</div>}
                 <div className="flex items-center gap-1 mt-0.5">
-                  {checkingAttestation ? (
-                    <span className="text-xs text-slate-400 flex items-center gap-1"><Loader2 className="w-3 h-3 animate-spin" />Verifying...</span>
-                  ) : attestation?.attested ? (
-                    <span className="text-xs text-emerald-600 flex items-center gap-1"><CheckCircle className="w-3 h-3" />On-chain attested</span>
+                  {signing ? (
+                    <span className="text-xs text-violet-600 flex items-center gap-1"><Loader2 className="w-3 h-3 animate-spin" />Sign in MetaMask...</span>
+                  ) : salaryUnlocked ? (
+                    <span className="text-xs text-emerald-600 flex items-center gap-1"><CheckCircle className="w-3 h-3" />Identity verified</span>
                   ) : (
-                    <span className="text-xs text-violet-600 flex items-center gap-1"><Lock className="w-3 h-3" />Arcium Encrypted</span>
+                    <span className="text-xs text-violet-600 flex items-center gap-1"><Lock className="w-3 h-3" />Sign to reveal</span>
                   )}
                 </div>
               </div>
