@@ -19,6 +19,7 @@ import { formatEther } from 'viem';
 import { galileoTestnet } from '@/lib/wagmi';
 import { WalletConnect } from '@/components/employer/WalletConnect';
 import { ARCIUM_REGISTRY_ADDRESS, ARCIUM_REGISTRY_ABI } from '@/lib/arcium-registry';
+import Image from 'next/image';
 
 const DAYS = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri'];
 
@@ -85,9 +86,7 @@ function EmployeePortalView({ employee, attendance, payrollReceipts, companyName
       <header className="bg-white border-b border-slate-200 sticky top-0 z-20">
         <div className="max-w-3xl mx-auto px-6 h-14 flex items-center justify-between">
           <div className="flex items-center gap-2">
-            <div className="w-7 h-7 rounded-lg bg-gradient-to-br from-brand-600 to-violet-600 flex items-center justify-center">
-              <Zap className="w-3.5 h-3.5 text-white" />
-            </div>
+            <Image src="/logo.png" alt="ZeroPay" width={28} height={28} className="rounded-full logo-spin" />
             <span className="font-bold text-slate-900 text-sm">ZeroPay</span>
             <span className="text-xs text-slate-400">Employee Portal</span>
           </div>
@@ -391,9 +390,7 @@ export default function EmployeePage() {
       <header className="bg-white border-b border-slate-200">
         <div className="max-w-2xl mx-auto px-6 h-14 flex items-center justify-between">
           <div className="flex items-center gap-2">
-            <div className="w-7 h-7 rounded-lg bg-gradient-to-br from-brand-600 to-violet-600 flex items-center justify-center">
-              <Zap className="w-3.5 h-3.5 text-white" />
-            </div>
+            <Image src="/logo.png" alt="ZeroPay" width={28} height={28} className="rounded-full logo-spin" />
             <span className="font-bold text-slate-900 text-sm">ZeroPay Employee Portal</span>
           </div>
           <Link href="/" className="text-xs text-slate-400 hover:text-slate-600 flex items-center gap-1">
