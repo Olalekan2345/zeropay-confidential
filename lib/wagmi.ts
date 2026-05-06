@@ -30,7 +30,7 @@ export const galileoTestnet = defineChain({
 export const wagmiConfig = createConfig({
   chains: [galileoTestnet],
   connectors: [
-    injected({ target: 'metaMask' }),
+    injected(),
     walletConnect({
       projectId: process.env.NEXT_PUBLIC_WALLETCONNECT_PROJECT_ID || '',
       metadata: {
