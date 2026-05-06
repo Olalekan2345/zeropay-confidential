@@ -51,7 +51,7 @@ export function InviteEmailPreview({ employees, companyName, appUrl }: Props) {
           </div>
           <div>
             <div className="font-semibold text-slate-900 text-sm">Onboarding Emails</div>
-            <div className="text-xs text-slate-400">{sentEmployees.length} invite(s) dispatched via Resend</div>
+            <div className="text-xs text-slate-400">{sentEmployees.length} invite(s) dispatched via Brevo</div>
           </div>
         </div>
       </div>
