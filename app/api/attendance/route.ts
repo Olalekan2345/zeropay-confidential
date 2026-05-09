@@ -28,8 +28,20 @@ export async function POST(req: NextRequest) {
   }
 
   const db = createServerClient();
-  const today = new Date().toISOString().split('T')[0];
-  const now = new Date().toISOString();
+  const now = new Date();
+  const today = now.toISOString().split('T')[0];
+  const nowIso = now.toISOString();
+
+  // Block weekends
+  const dayOfWeek = now.getUTCDay(); // 0=Sun, 6=Sat
+  if (dayOfWeek === 0 || dayOfWeek === 6) {
+    return NextResponse.json({ error: 'Clock in/out is not allowed on weekends.' }, { status: 400 });
+  }
+
+  // Block clock-in after 5PM UTC
+  if (action === 'clock_in' && now.getUTCHours() >= 17) {
+    return NextResponse.json({ error: 'Clock in is not allowed after 5:00 PM.' }, { status: 400 });
+  }
 
   if (action === 'clock_in') {
     const { data: existing } = await db
@@ -51,10 +63,10 @@ export async function POST(req: NextRequest) {
         employee_id,
         company_id,
         date: today,
-        clock_in: now,
+        clock_in: nowIso,
         clock_out: null,
         payable_hours: existing?.payable_hours ?? 0,
-        updated_at: now,
+        updated_at: nowIso,
       }, { onConflict: 'employee_id,date' })
       .select()
       .single();
@@ -70,7 +82,7 @@ export async function POST(req: NextRequest) {
         encrypted_salary: null,
         salary_iv: null,
         compute_hash: null,
-        updated_at: now,
+        updated_at: nowIso,
       })
       .eq('id', employee_id)
       .eq('payroll_status', 'paid');
@@ -79,14 +91,14 @@ export async function POST(req: NextRequest) {
     const storage = await uploadToStorage({ attendance: data }, 'clock-in');
     await db.from('storage_receipts').insert({
       company_id,
-      action: `Clock-in: ${employee_name} at ${new Date(now).toLocaleTimeString()}`,
+      action: `Clock-in: ${employee_name} at ${now.toLocaleTimeString()}`,
       category: 'attendance',
       tx_hash: storage.txHash,
       data_size: storage.dataSize,
     });
     await db.from('agent_logs').insert({
       company_id,
-      message: `${employee_name} clocked in at ${new Date(now).toLocaleTimeString()}`,
+      message: `${employee_name} clocked in at ${now.toLocaleTimeString()}`,
       type: 'info',
     });
 
@@ -109,14 +121,14 @@ export async function POST(req: NextRequest) {
     }
 
     // Accumulate: add this session's hours to any hours already logged today
-    const sessionHours = computePayableHours(existing.clock_in, now);
+    const sessionHours = computePayableHours(existing.clock_in, nowIso);
     const accumulatedHours = (existing.payable_hours || 0) + sessionHours;
     // Cap total at 8h regardless of how many sessions
     const payableHours = Math.min(accumulatedHours, 8);
 
     const { data, error } = await db
       .from('attendance')
-      .update({ clock_out: now, payable_hours: payableHours, updated_at: now })
+      .update({ clock_out: nowIso, payable_hours: payableHours, updated_at: nowIso })
       .eq('id', existing.id)
       .select()
       .single();
@@ -135,7 +147,7 @@ export async function POST(req: NextRequest) {
 
     await db
       .from('employees')
-      .update({ weekly_hours: weeklyHours, updated_at: now })
+      .update({ weekly_hours: weeklyHours, updated_at: nowIso })
       .eq('id', employee_id);
 
     // Log
