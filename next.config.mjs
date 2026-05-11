@@ -11,6 +11,8 @@ const nextConfig = {
   webpack: (config) => {
     config.resolve.alias['@react-native-async-storage/async-storage'] =
       path.resolve(__dirname, './lib/stubs/async-storage.js');
+    config.resolve.alias['@0glabs/0g-ts-sdk'] =
+      path.resolve(__dirname, './lib/stubs/async-storage.js');
     return config;
   },
 };
