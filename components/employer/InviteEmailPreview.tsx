@@ -87,7 +87,7 @@ export function InviteEmailPreview({ employees, companyName, appUrl }: Props) {
                   <div className="bg-white border border-slate-200 rounded-xl overflow-hidden shadow-sm max-w-sm mx-auto">
                     <div className="bg-gradient-to-r from-brand-600 to-violet-600 px-5 py-4 text-center">
                       <div className="text-white font-bold text-base">⚡ ZeroPay Confidential</div>
-                      <div className="text-blue-200 text-xs mt-0.5">AI Payroll · 0G Galileo Testnet</div>
+                      <div className="text-blue-200 text-xs mt-0.5">AI Payroll · 0G Mainnet</div>
                     </div>
                     <div className="px-5 py-4">
                       <div className="text-sm font-semibold text-slate-900 mb-2">Welcome to {companyName}! 🎉</div>

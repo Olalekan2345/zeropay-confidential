@@ -60,7 +60,7 @@ export function SummaryCards({ walletAddress, balance, employees, attendance, au
 
   return (
     <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-7 gap-4">
-      <StatCard icon={Wallet} label="Employer Wallet" value={formatWalletAddress(walletAddress)} sub="0G Galileo Testnet" accent="blue" badge="Connected" badgeVariant="success" />
+      <StatCard icon={Wallet} label="Employer Wallet" value={formatWalletAddress(walletAddress)} sub="0G Mainnet" accent="blue" badge="Connected" badgeVariant="success" />
       <StatCard icon={DollarSign} label="0G Balance" value={balance} sub="0G Galileo Tokens" accent="emerald" />
       <StatCard icon={Users} label="Total Employees" value={employees.length.toString()} sub={`${employees.filter(e => e.invite_status === 'accepted').length} onboarded`} accent="violet" />
       <StatCard icon={Clock} label="Today's Attendance" value={`${todayAtt.length}/${employees.length}`} sub={`${clockedIn} currently clocked in`} accent="amber" pulse={clockedIn > 0} />

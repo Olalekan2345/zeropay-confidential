@@ -16,7 +16,7 @@ import { getWeekDates } from '@/lib/payroll';
 import { EXPLORER_URL } from '@/lib/wagmi';
 import { useAccount, useBalance, usePublicClient, useWalletClient } from 'wagmi';
 import { formatEther } from 'viem';
-import { galileoTestnet } from '@/lib/wagmi';
+import { zgMainnet } from '@/lib/wagmi';
 import { WalletConnect } from '@/components/employer/WalletConnect';
 import { ARCIUM_REGISTRY_ADDRESS, ARCIUM_REGISTRY_ABI } from '@/lib/arcium-registry';
 import Image from 'next/image';
@@ -31,11 +31,11 @@ function EmployeePortalView({ employee, attendance, payrollReceipts, companyName
   const [attestation, setAttestation] = useState<{ attested: boolean; employer?: string; timestamp?: number } | null>(null);
   const [checkingAttestation, setCheckingAttestation] = useState(false);
   const { address } = useAccount();
-  const { data: walletClient } = useWalletClient({ chainId: galileoTestnet.id });
-  const publicClient = usePublicClient({ chainId: galileoTestnet.id });
+  const { data: walletClient } = useWalletClient({ chainId: zgMainnet.id });
+  const publicClient = usePublicClient({ chainId: zgMainnet.id });
   const { data: balanceData } = useBalance({
     address: (employee.wallet_address || address) as `0x${string}`,
-    chainId: galileoTestnet.id,
+    chainId: zgMainnet.id,
   });
 
   const registryDeployed = !!ARCIUM_REGISTRY_ADDRESS;

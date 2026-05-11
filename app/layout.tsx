@@ -4,7 +4,7 @@ import { Providers } from './providers';
 
 export const metadata: Metadata = {
   title: 'ZeroPay | Confidential AI Payroll Agent',
-  description: 'Autonomous AI payroll workforce management built on 0G Labs Galileo Testnet with Arcium confidential compute',
+  description: 'Autonomous AI payroll workforce management built on 0G Labs 0G Mainnet with Arcium confidential compute',
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {

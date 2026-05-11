@@ -4,7 +4,7 @@ import { useState, useEffect, useCallback, useRef } from 'react';
 import { supabase, Database } from '@/lib/supabase';
 import { useWalletClient, useBalance, usePublicClient } from 'wagmi';
 import { parseEther, formatEther, keccak256, toHex, encodePacked } from 'viem';
-import { galileoTestnet } from '@/lib/wagmi';
+import { zgMainnet } from '@/lib/wagmi';
 import {
   deriveEncryptionKey, encryptSalary, decryptSalary,
   getCachedKey, setCachedKey, getKeyDerivationMessage
@@ -73,8 +73,8 @@ export function usePayrollActions(companyId: string | null, walletAddress: strin
   const [isAttesting, setIsAttesting] = useState(false);
   const [isPaying, setIsPaying] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const { data: walletClient } = useWalletClient({ chainId: galileoTestnet.id });
-  const publicClient = usePublicClient({ chainId: galileoTestnet.id });
+  const { data: walletClient } = useWalletClient({ chainId: zgMainnet.id });
+  const publicClient = usePublicClient({ chainId: zgMainnet.id });
 
   const registryDeployed = !!ARCIUM_REGISTRY_ADDRESS;
 
@@ -129,7 +129,7 @@ export function usePayrollActions(companyId: string | null, walletAddress: strin
             abi: ARCIUM_REGISTRY_ABI,
             functionName: 'attest',
             args: [computeHash as `0x${string}`, BigInt(eligible.length)],
-            chain: galileoTestnet,
+            chain: zgMainnet,
           });
           // Wait for confirmation
           await publicClient?.waitForTransactionReceipt({ hash: txHash });
@@ -245,7 +245,7 @@ export function usePayrollActions(companyId: string | null, walletAddress: strin
         functionName: 'batchPay',
         args: [recipients, amounts],
         value: total,
-        chain: galileoTestnet,
+        chain: zgMainnet,
       });
 
       const payments = eligible.map(emp => ({

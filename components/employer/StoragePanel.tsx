@@ -36,7 +36,7 @@ export function StoragePanel({ receipts }: Props) {
             </div>
             <div>
               <div className="font-semibold text-white text-sm">0G Decentralized Storage</div>
-              <div className="text-xs text-blue-200">Galileo Testnet · Content-Addressed</div>
+              <div className="text-xs text-blue-200">0G Mainnet · Content-Addressed</div>
             </div>
           </div>
           <div className="text-right">
@@ -117,7 +117,7 @@ export function StoragePanel({ receipts }: Props) {
       <div className="px-4 py-2.5 border-t border-slate-100 bg-slate-50">
         <div className="flex items-center gap-2">
           <div className="w-1.5 h-1.5 rounded-full bg-brand-500 animate-pulse" />
-          <span className="text-xs text-slate-500">Immutable records on 0G Galileo Testnet · Content-addressed</span>
+          <span className="text-xs text-slate-500">Immutable records on 0G Mainnet · Content-addressed</span>
         </div>
       </div>
     </div>

@@ -3,7 +3,7 @@
 import { useState } from 'react';
 import { useBalance } from 'wagmi';
 import { formatEther } from 'viem';
-import { galileoTestnet } from '@/lib/wagmi';
+import { zgMainnet } from '@/lib/wagmi';
 import { WalletConnect } from './WalletConnect';
 import { AddEmployeeDialog } from './AddEmployeeDialog';
 import { EmployeeTable } from './EmployeeTable';
@@ -45,7 +45,7 @@ export function EmployerDashboardContent({ company, walletAddress, onToggleAutoP
   const [activeTab, setActiveTab] = useState('overview');
   const [showAddEmployee, setShowAddEmployee] = useState(false);
 
-  const { data: balanceData } = useBalance({ address: walletAddress as `0x${string}`, chainId: galileoTestnet.id });
+  const { data: balanceData } = useBalance({ address: walletAddress as `0x${string}`, chainId: zgMainnet.id });
   const balance = balanceData ? parseFloat(formatEther(balanceData.value)).toFixed(4) : '—';
 
   const { employees, loading: empLoading, addEmployee, updateEmployee, deleteEmployee, resendInvite } = useEmployees(company.id);
@@ -263,7 +263,7 @@ export function EmployerDashboardContent({ company, walletAddress, onToggleAutoP
             <div className="space-y-6 animate-fade-in">
               <div>
                 <h2 className="text-lg font-semibold text-slate-900">0G Decentralized Storage</h2>
-                <p className="text-sm text-slate-500">All workforce memory stored immutably on 0G Galileo Testnet</p>
+                <p className="text-sm text-slate-500">All workforce memory stored immutably on 0G Mainnet</p>
               </div>
               <StoragePanel receipts={storageReceipts} />
             </div>

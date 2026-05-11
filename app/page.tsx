@@ -19,7 +19,7 @@ const features = [
   {
     icon: Database,
     title: '0G Decentralized Storage',
-    description: 'All workforce memory — attendance, records, and receipts — stored immutably on 0G Labs Galileo Testnet.',
+    description: 'All workforce memory — attendance, records, and receipts — stored immutably on 0G Labs 0G Mainnet.',
     color: 'text-blue-600',
     bg: 'bg-blue-50',
   },
@@ -86,7 +86,7 @@ export default function LandingPage() {
           {/* Badge */}
           <div className="inline-flex items-center gap-2 bg-brand-50 border border-brand-200 rounded-full px-4 py-1.5 mb-8">
             <span className="w-1.5 h-1.5 rounded-full bg-brand-500 animate-pulse" />
-            <span className="text-sm text-brand-700 font-medium">Built on 0G Labs Galileo Testnet</span>
+            <span className="text-sm text-brand-700 font-medium">Built on 0G Labs 0G Mainnet</span>
           </div>
 
           <h1 className="text-5xl md:text-6xl font-bold text-slate-900 leading-tight mb-6">
@@ -220,7 +220,7 @@ export default function LandingPage() {
             <span className="font-semibold text-slate-700 text-sm">ZeroPay Confidential</span>
           </div>
           <div className="flex items-center gap-6 text-xs text-slate-400">
-            <span>Built on 0G Labs Galileo Testnet</span>
+            <span>Built on 0G Labs 0G Mainnet</span>
             <span>•</span>
             <span>Powered by Arcium Confidential Compute</span>
           </div>

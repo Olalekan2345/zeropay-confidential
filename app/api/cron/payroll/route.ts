@@ -3,7 +3,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { createServerClient } from '@/lib/supabase';
 import { createWalletClient, http } from 'viem';
 import { privateKeyToAccount } from 'viem/accounts';
-import { galileoTestnet } from '@/lib/wagmi';
+import { zgMainnet } from '@/lib/wagmi';
 import { BATCH_CONTRACT_ADDRESS, BATCH_PAY_ABI, buildBatchPayArgs } from '@/lib/batch-pay';
 import { BrevoClient } from '@getbrevo/brevo';
 
@@ -34,8 +34,8 @@ export async function GET(req: NextRequest) {
   const account = privateKeyToAccount(signerKey as `0x${string}`);
   const walletClient = createWalletClient({
     account,
-    chain: galileoTestnet,
-    transport: http('https://evmrpc-testnet.0g.ai'),
+    chain: zgMainnet,
+    transport: http('https://evmrpc.0g.ai'),
   });
 
   const results = [];
@@ -84,7 +84,7 @@ export async function GET(req: NextRequest) {
         functionName: 'batchPay',
         args: [recipients, amounts],
         value: total,
-        chain: galileoTestnet,
+        chain: zgMainnet,
       });
 
       // Record each receipt and mark employee paid
@@ -154,7 +154,7 @@ async function sendConfirmationEmail(
   ).join('');
 
   const totalPaid = payments.reduce((s, p) => s + p.amount, 0);
-  const explorerUrl = `https://chainscan-galileo.0g.ai/tx/${txHash}`;
+  const explorerUrl = `https://chainscan.0g.ai/tx/${txHash}`;
 
   const html = `
     <div style="font-family:Inter,sans-serif;max-width:520px;margin:0 auto;background:#fff;border-radius:12px;border:1px solid #e2e8f0;overflow:hidden">

@@ -3,7 +3,7 @@
 import { useState, useEffect, useCallback } from 'react';
 import { useAccount, useBalance } from 'wagmi';
 import { formatEther } from 'viem';
-import { galileoTestnet } from '@/lib/wagmi';
+import { zgMainnet } from '@/lib/wagmi';
 import { WalletConnect } from '@/components/employer/WalletConnect';
 import { AddEmployeeDialog } from '@/components/employer/AddEmployeeDialog';
 import { CompanySetup } from '@/components/employer/CompanySetup';
@@ -38,11 +38,11 @@ export default function EmployerPage() {
           </div>
           <h1 className="text-2xl font-bold text-slate-900 mb-2">Employer Dashboard</h1>
           <p className="text-slate-500 text-sm mb-8 leading-relaxed">
-            Connect your wallet to access the ZeroPay confidential payroll system on 0G Galileo Testnet.
+            Connect your wallet to access the ZeroPay confidential payroll system on 0G Mainnet.
           </p>
           <WalletConnect />
           <p className="text-xs text-slate-400 mt-4">
-            Ensure MetaMask is installed and set to 0G Galileo Testnet (Chain ID: 16602)
+            Ensure MetaMask is installed and set to 0G Mainnet (Chain ID: 16661)
           </p>
           <div className="mt-4">
             <Link href="/" className="text-xs text-slate-400 hover:text-slate-600 flex items-center justify-center gap-1">

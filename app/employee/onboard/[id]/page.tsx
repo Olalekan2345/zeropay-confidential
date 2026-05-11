@@ -3,7 +3,7 @@
 import { useEffect, useState } from 'react';
 import { useParams, useRouter } from 'next/navigation';
 import { useAccount, useWalletClient } from 'wagmi';
-import { galileoTestnet } from '@/lib/wagmi';
+import { zgMainnet } from '@/lib/wagmi';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -210,7 +210,7 @@ export default function OnboardingPage() {
                   value={walletInput}
                   onChange={e => setWalletInput(e.target.value)}
                 />
-                <div className="text-xs text-slate-400">Must be a 0G Galileo Testnet compatible address (EVM)</div>
+                <div className="text-xs text-slate-400">Must be a 0G Mainnet compatible address (EVM)</div>
               </div>
 
               <Button className="w-full" size="lg" onClick={handleLinkWallet} disabled={saving || (!walletInput && !address)}>
@@ -227,7 +227,7 @@ export default function OnboardingPage() {
               </div>
               <h2 className="text-xl font-bold text-slate-900 mb-2">You're All Set!</h2>
               <p className="text-slate-500 text-sm mb-6">
-                Your ZeroPay account is active. Salary payments land every Saturday directly in your wallet on 0G Galileo Testnet.
+                Your ZeroPay account is active. Salary payments land every Saturday directly in your wallet on 0G Mainnet.
               </p>
               {employee?.wallet_address && (
                 <div className="bg-slate-50 rounded-xl px-4 py-3 mb-6 font-mono text-xs text-slate-600 text-center break-all">
@@ -251,7 +251,7 @@ export default function OnboardingPage() {
         </div>
 
         <div className="text-center mt-4 text-xs text-slate-400">
-          ZeroPay Confidential · 0G Galileo Testnet · Arcium Confidential Compute
+          ZeroPay Confidential · 0G Mainnet · Arcium Confidential Compute
         </div>
       </div>
     </div>

@@ -3,7 +3,7 @@
 import { ConnectButton } from '@rainbow-me/rainbowkit';
 import { Wallet, ExternalLink } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import { galileoTestnet, EXPLORER_URL } from '@/lib/wagmi';
+import { zgMainnet, EXPLORER_URL } from '@/lib/wagmi';
 
 export function WalletConnect() {
   return (
@@ -11,7 +11,7 @@ export function WalletConnect() {
       {({ account, chain, openAccountModal, openChainModal, openConnectModal, mounted }) => {
         const ready = mounted;
         const connected = ready && account && chain;
-        const wrongChain = connected && chain.id !== 16602;
+        const wrongChain = connected && chain.id !== 16661;
 
         if (!ready) return null;
 

@@ -8,9 +8,9 @@ module.exports = {
     settings: { optimizer: { enabled: true, runs: 200 } },
   },
   networks: {
-    galileo: {
-      url: 'https://evmrpc-testnet.0g.ai',
-      chainId: 16602,
+    mainnet: {
+      url: 'https://evmrpc.0g.ai',
+      chainId: 16661,
       accounts: process.env.DEPLOYER_PRIVATE_KEY ? [process.env.DEPLOYER_PRIVATE_KEY] : [],
     },
   },

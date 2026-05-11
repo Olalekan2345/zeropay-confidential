@@ -2,9 +2,9 @@ import { createConfig, http } from 'wagmi';
 import { injected, walletConnect } from 'wagmi/connectors';
 import { defineChain } from 'viem';
 
-export const galileoTestnet = defineChain({
-  id: 16602,
-  name: '0G-Galileo-Testnet',
+export const zgMainnet = defineChain({
+  id: 16661,
+  name: '0G-Newton-Mainnet',
   nativeCurrency: {
     decimals: 18,
     name: '0G',
@@ -12,40 +12,40 @@ export const galileoTestnet = defineChain({
   },
   rpcUrls: {
     default: {
-      http: ['https://evmrpc-testnet.0g.ai'],
+      http: ['https://evmrpc.0g.ai'],
     },
     public: {
-      http: ['https://evmrpc-testnet.0g.ai'],
+      http: ['https://evmrpc.0g.ai'],
     },
   },
   blockExplorers: {
     default: {
-      name: '0G Galileo Explorer',
-      url: 'https://chainscan-galileo.0g.ai',
+      name: '0G Explorer',
+      url: 'https://chainscan.0g.ai',
     },
   },
-  testnet: true,
+  testnet: false,
 });
 
 export const wagmiConfig = createConfig({
-  chains: [galileoTestnet],
+  chains: [zgMainnet],
   connectors: [
     injected(),
     walletConnect({
       projectId: process.env.NEXT_PUBLIC_WALLETCONNECT_PROJECT_ID || '',
       metadata: {
         name: 'ZeroPay Confidential',
-        description: 'Autonomous AI Payroll on 0G Galileo',
-        url: 'http://localhost:3000',
+        description: 'Autonomous AI Payroll on 0G Mainnet',
+        url: process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000',
         icons: [],
       },
     }),
   ],
   transports: {
-    [16602]: http('https://evmrpc-testnet.0g.ai'),
+    [16661]: http('https://evmrpc.0g.ai'),
   },
   ssr: true,
 });
 
-export const CHAIN_ID = galileoTestnet.id;
-export const EXPLORER_URL = 'https://chainscan-galileo.0g.ai';
+export const CHAIN_ID = zgMainnet.id;
+export const EXPLORER_URL = 'https://chainscan.0g.ai';
