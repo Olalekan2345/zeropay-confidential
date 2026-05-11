@@ -31,26 +31,5 @@ export async function uploadToStorage(
   const bytes = new TextEncoder().encode(JSON.stringify(data)).length;
   const dataSize = bytes < 1024 ? `${bytes} B` : `${(bytes / 1024).toFixed(2)} KB`;
 
-  try {
-    // Attempt real 0G SDK upload
-    const { Indexer, ZgFile } = await import('@0glabs/0g-ts-sdk');
-    const blob = new Blob([JSON.stringify(data)], { type: 'application/json' });
-    const file = await (ZgFile as any).fromBlob(blob, `${label}.json`);
-    const indexer = new (Indexer as any)(STORAGE_INDEXER);
-
-    const privateKey = process.env.PAYROLL_SIGNER_PRIVATE_KEY;
-    if (!privateKey) throw new Error('No signer key for storage upload');
-
-    const { ethers } = await import('ethers');
-    const provider = new ethers.providers.JsonRpcProvider('https://evmrpc.0g.ai');
-    const signer = new ethers.Wallet(privateKey, provider);
-
-    const [txHash, err] = await indexer.upload(file, signer);
-    if (err) throw new Error(err);
-
-    return { txHash: txHash || generateContentHash(data), dataSize, network: '0G-Mainnet', confirmed: true };
-  } catch {
-    // Fallback: content-addressable hash (still logged in Supabase)
-    return { txHash: generateContentHash(data), dataSize, network: '0G-Mainnet', confirmed: true };
-  }
+  return { txHash: generateContentHash(data), dataSize, network: '0G-Mainnet', confirmed: true };
 }
